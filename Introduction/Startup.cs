@@ -6,14 +6,18 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace Introduction
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private readonly ILogger<Startup> _logger;
+
+        public Startup(IConfiguration configuration, ILogger<Startup> logger)
         {
             Configuration = configuration;
+            _logger = logger;
         }
 
         public IConfiguration Configuration { get; }
@@ -33,6 +37,17 @@ namespace Introduction
 
             services.AddDbContext<NorthwindContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("NorthwindDatabase")));
+
+            LogCurrentConfigurationValues();
+        }
+
+        private void LogCurrentConfigurationValues()
+        {
+            var db = Configuration.GetConnectionString("NorthwindDatabase");
+            var productsPageSize = Configuration.GetConnectionString("ProductsPageSize");
+            _logger.LogInformation("Configuration Reading started");
+            _logger.LogInformation("Db: {db}", db);
+            _logger.LogInformation("productsPageSize: {productsPageSize}", productsPageSize);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,6 +73,7 @@ namespace Introduction
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
         }
     }
 }
