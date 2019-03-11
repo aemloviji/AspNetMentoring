@@ -1,0 +1,53 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "provider": "cdnjs",
+      "library": "jquery@3.3.1",
+      "destination": "wwwroot/lib/jquery/",
+      "files": [
+        "jquery.min.js",
+        "jquery.js",
+        "jquery.min.map"
+      ]
+    },
+    {
+      "provider": "cdnjs",
+      "library": "jquery-validation-unobtrusive@3.2.11",
+      "destination": "wwwroot/lib/jquery-validation-unobtrusive/",
+      "files": [
+        "jquery.validate.unobtrusive.min.js",
+        "jquery.validate.unobtrusive.js"
+      ]
+    },
+    {
+      "provider": "cdnjs",
+      "library": "jquery-validate@1.19.0",
+      "destination": "wwwroot/lib/jquery-validate/",
+      "files": [
+        "jquery.validate.min.js",
+        "additional-methods.js",
+        "additional-methods.min.js",
+        "jquery.validate.js"
+      ]
+    },
+    {
+      "provider": "cdnjs",
+      "library": "twitter-bootstrap@4.3.1",
+      "destination": "wwwroot/lib/bootstrap/",
+      "files": [
+        "js/bootstrap.bundle.js",
+        "css/bootstrap-grid.css",
+        "js/bootstrap.bundle.min.js",
+        "js/bootstrap.js",
+        "css/bootstrap-grid.min.css",
+        "js/bootstrap.min.js",
+        "css/bootstrap-reboot.css",
+        "css/bootstrap-reboot.min.css",
+        "css/bootstrap.css",
+        "css/bootstrap.min.css"
+      ]
+    }
+  ]
+}
