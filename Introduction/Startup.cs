@@ -1,5 +1,6 @@
 ﻿using Introduction.Models;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -53,15 +54,37 @@ namespace Introduction
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            if (env.IsDevelopment())
+            //if (env.IsDevelopment())
+            //{
+            //    app.UseDeveloperExceptionPage();
+            //}
+            //else
+            //{
+            //    app.UseExceptionHandler("/Home/Error");
+            //    app.UseHsts();
+            //}
+
+            app.UseExceptionHandler(errorApp =>
             {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-                app.UseHsts();
-            }
+                errorApp.Run(async context =>
+                {
+                    context.Response.StatusCode = 500;
+                    context.Response.ContentType = "text/html";
+
+
+                    var exceptionHandlerPathFeature = context.Features.Get<IExceptionHandlerPathFeature>();
+
+                    await context.Response.WriteAsync("<html lang=\"en\"><body>\r\n");
+                    await context.Response.WriteAsync("ERROR!<br><br>\r\n");
+                    await context.Response.WriteAsync($"ERROR:{exceptionHandlerPathFeature.Error} <br><br>\r\n");
+
+                    _logger.LogInformation("Error:{error}", exceptionHandlerPathFeature.Error);
+
+                    await context.Response.WriteAsync("<a href=\"/\">Home</a><br>\r\n");
+                    await context.Response.WriteAsync("</body></html>\r\n");
+                });
+            });
+
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
