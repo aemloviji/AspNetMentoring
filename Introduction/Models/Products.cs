@@ -20,6 +20,7 @@ namespace Introduction.Models
         public int? CategoryId { get; set; }
         public string QuantityPerUnit { get; set; }
 
+        [Required]
         [Range(0.01, 99.99, ErrorMessage = "Unit prive must be in range 0.01 and 99.99")]
         public decimal? UnitPrice { get; set; }
         public short? UnitsInStock { get; set; }
