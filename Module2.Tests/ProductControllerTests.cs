@@ -31,7 +31,7 @@ namespace Module2.Tests
                 mockProductRepository.Object,
                 mockSupplierRepository.Object,
                 mockCategoryRepository.Object,
-                new object());
+                null);
 
             // Act
             var result = await controller.Index();
