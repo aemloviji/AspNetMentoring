@@ -8,7 +8,7 @@ namespace Module2.Infrastructure.Repositories.Interfaces
     {
         Task<Products> GetByIdAsync(int id);
         Task<List<Products>> ListAsync();
-        Task AddAsync(Products session);
-        Task UpdateAsync(Products session);
+        Task AddAsync(Products product);
+        Task UpdateAsync(Products product);
     }
 }

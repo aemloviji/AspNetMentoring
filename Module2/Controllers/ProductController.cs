@@ -40,17 +40,6 @@ namespace Module2.Controllers
             return View(productList);
         }
 
-        private List<Products> PaginateResult(List<Products> productList)
-        {
-            var pageSize = _configuration.GetValue<int>(ProductsPageSizeConfigurationKey);
-            if (pageSize > 0)
-            {
-                productList = productList.Take(pageSize).ToList();
-            }
-
-            return productList;
-        }
-
         public IActionResult Create()
         {
             BuildCreateAndEditFormsViewDataDictionaries(null, null);
@@ -75,7 +64,7 @@ namespace Module2.Controllers
         {
             if (!id.HasValue)
             {
-                return NotFound();
+                return BadRequest();
             }
 
             var product = await _productsRepository.GetByIdAsync(id.Value);
@@ -121,6 +110,18 @@ namespace Module2.Controllers
             return View(products);
         }
 
+        #region private methods
+        private List<Products> PaginateResult(List<Products> productList)
+        {
+            var pageSize = _configuration.GetValue<int>(ProductsPageSizeConfigurationKey);
+            if (pageSize > 0)
+            {
+                productList = productList.Take(pageSize).ToList();
+            }
+
+            return productList;
+        }
+
         private async Task<bool> ProductNotExists(int id)
         {
             return await _productsRepository.GetByIdAsync(id) == null;
@@ -135,5 +136,6 @@ namespace Module2.Controllers
             ViewData["CategoryId"] = new SelectList(categoryListRetreiverTask.Result, "CategoryId", "CategoryName", categoryId);
             ViewData["SupplierId"] = new SelectList(supplierListRetreiverTask.Result, "SupplierId", "CompanyName", supplierId);
         }
+        #endregion
     }
 }
