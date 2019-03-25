@@ -19,5 +19,17 @@ namespace Module2.Infrastructure.Repositories.Implementations
         {
             return _dbContext.Categories.ToListAsync();
         }
+
+        public Task<Categories> GetByIdAsync(int id)
+        {
+            return _dbContext.Categories
+                 .FirstOrDefaultAsync(p => p.CategoryId == id);
+        }
+
+        public Task UpdateAsync(Categories category)
+        {
+            _dbContext.Entry(category).State = EntityState.Modified;
+            return _dbContext.SaveChangesAsync();
+        }
     }
 }
