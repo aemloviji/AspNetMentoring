@@ -68,6 +68,23 @@ namespace Module2.Controllers
             return View(category);
         }
 
+        /// Task3: showing image with 2 routers
+        public async Task<IActionResult> ShowImage(int? id)
+        {
+            if (!id.HasValue)
+            {
+                return BadRequest();
+            }
+
+            var category = await _categoryRepository.GetByIdAsync(id.Value);
+            if (category == null)
+            {
+                return NotFound($"Category with id {id.Value} not found!");
+            }
+
+            return View(category);
+        }
+
         private static async Task<byte[]> ConvertFormFileToByteArray(IFormFile file)
         {
             using (var memoryStream = new MemoryStream())

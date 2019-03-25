@@ -25,20 +25,28 @@
     <tbody>
         @foreach (var item in Model)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.CategoryName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @await Component.InvokeAsync("CategoryImageFixer", new { picture= item.Picture })
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.CategoryId">Edit</a>
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CategoryName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @await Component.InvokeAsync("CategoryImageFixer", new { picture = item.Picture })
+                    <br />
+                    <a asp-action="ShowImage" asp-route-id="@item.CategoryId">
+                        Show Image (Default Router)
+                    </a>
+                    <br />
+                    <a href="@Url.RouteUrl("category-image",new { id = item.CategoryId})">
+                        Show Image (Image Spec. Router)
+                    </a>
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.CategoryId">Edit</a>
+                </td>
+            </tr>
         }
     </tbody>
 </table>
