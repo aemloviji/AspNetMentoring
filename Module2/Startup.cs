@@ -1,6 +1,4 @@
-﻿using Module2.Models;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -8,9 +6,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Module2.Infrastructure.Repositories.Interfaces;
-using Module2.Infrastructure.Repositories.Implementations;
 using Module2.Filters;
+using Module2.Infrastructure.Repositories.Implementations;
+using Module2.Infrastructure.Repositories.Interfaces;
+using Module2.Middlewares;
+using Module2.Models;
 
 namespace Module2
 {
@@ -65,8 +65,13 @@ namespace Module2
             }
 
             app.UseHttpsRedirection();
+
+            //Task 4. Custom Middlware
+            app.UseImageCache();
+
             app.UseStaticFiles();
             app.UseCookiePolicy();
+
 
             app.UseMvc(routes =>
             {
