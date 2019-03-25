@@ -1,23 +1,21 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Module2.Models;
+﻿using Microsoft.AspNetCore.Mvc;
+using Module2.Infrastructure.Repositories.Interfaces;
+using System.Threading.Tasks;
 
 namespace Module2.Controllers
 {
     public class CategoryController : Controller
     {
-        private readonly NorthwindContext _context;
+        private readonly ICategoryRepository _categoryRepository;
 
-        public CategoryController(NorthwindContext context)
+        public CategoryController(ICategoryRepository categoryRepository)
         {
-            _context = context;
+            _categoryRepository = categoryRepository;
         }
 
-        // GET: Categories
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Categories.ToListAsync());
+            return View(await _categoryRepository.ListAsync());
         }      
     }
 }

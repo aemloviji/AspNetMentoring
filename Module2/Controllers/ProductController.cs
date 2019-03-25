@@ -19,8 +19,7 @@ namespace Module2.Controllers
         private readonly ICategoryRepository _categoryRepository;
         private readonly IConfiguration _configuration;
 
-        public ProductController(
-            IProductsRepository productsRepository,
+        public ProductController(IProductsRepository productsRepository,
             ISupplierRepository supplierRepository,
             ICategoryRepository categoryRepository,
             IConfiguration configuration)
