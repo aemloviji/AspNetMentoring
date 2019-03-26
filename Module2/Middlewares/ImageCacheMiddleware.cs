@@ -1,64 +1,168 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
+﻿using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace Module2.Middlewares
 {
     public class ImageCacheMiddleware
     {
-        private readonly RequestDelegate _next;
+        private const string CacheDirectoryKey = "ImageCacheMiddleware:CacheDirectory";
+        private const string CacheCapacity = "ImageCacheMiddleware:CacheCapacity";
+        private const string CacheExpirationTimeKey = "ImageCacheMiddleware:CacheExpirationInSeconds";
 
-        public ImageCacheMiddleware(RequestDelegate next)
+        private readonly RequestDelegate _next;
+        private readonly ILogger _logger;
+        private readonly IConfiguration _config;
+
+        private static DateTime _lastCacheRequestDate;
+        private static readonly string[] imageSuffixes = new string[] { ".png", ".jpg" };
+
+        private string _requestPath;
+        private string _cacheDirectory;
+        private int _cacheCapacity;
+        private int _cacheExpirationInSeconds;
+
+        private string FileName => _requestPath.Substring(_requestPath.LastIndexOf('/') + 1);
+
+        private string FullFileName => Path.Combine(_cacheDirectory, FileName);
+
+        public ImageCacheMiddleware(RequestDelegate next,
+             ILogger<ImageCacheMiddleware> logger,
+             IConfiguration config)
         {
             _next = next;
+            _logger = logger;
+            _config = config;
+
+            ReadCacheSettings();
         }
 
-        public async Task InvokeAsync(HttpContext context, IConfiguration config)
+        public async Task InvokeAsync(HttpContext context)
+        {
+            _requestPath = context.Request.Path;
+
+            // handle next middlware if requested resource is not image
+            if (!IsImageRequested())
+            {
+                await _next(context);
+                return;
+            }
+
+            await RunCacheFlow(context);
+        }
+
+        #region private methods
+        private async Task RunCacheFlow(HttpContext context)
+        {
+            RemoveCacheIfTimeEllapsed();
+            _lastCacheRequestDate = DateTime.Now;
+            if (File.Exists(FullFileName))
+            {
+                await RetreiveImageFromCache(context);
+            }
+            else
+            {
+                if (AllowedToSaveOnDisk())
+                {
+                    await CacheImage(context);
+                    return;
+                }
+
+                await _next(context);
+            }
+        }
+
+        private bool AllowedToSaveOnDisk()
+        {
+            var filesCountInCache = Directory.GetFiles(_cacheDirectory).Length;
+            if (filesCountInCache >= _cacheCapacity)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private async Task RetreiveImageFromCache(HttpContext context)
+        {
+            var cacheBody = ReadFromCache().ToArray();
+
+            context.Response.Body.Write(cacheBody, 0, cacheBody.Length);
+            await _next(context);
+        }
+
+        private async Task CacheImage(HttpContext context)
         {
             Stream originalBody = context.Response.Body;
             try
             {
-                using (var memStream = new MemoryStream())
+                using (var inputStream = new MemoryStream())
                 {
-                    context.Response.Body = memStream;
+                    context.Response.Body = inputStream;
                     await _next(context);
 
-                    if (context.Response.ContentType == "image/jpeg")
-                    {
-                        ReadCacheSettings(config,
-                            out string cacheDirectory,
-                            out int maxCachedImageCount,
-                            out int cacheExpirationTime);
-
-                        using (Stream outputStream = File.Create(cacheDirectory))
-                        {
-                            CopyStream(originalBody, outputStream);
-                        }
-                    }
+                    KeepOnDisk(inputStream);
+                    _logger.LogDebug($"File '{FullFileName}' cached");
                 }
             }
             finally
             {
                 context.Response.Body = originalBody;
+                await _next(context);
             }
         }
 
-        private static void ReadCacheSettings(IConfiguration config, out string cacheDirectory, out int maxCachedImageCount, out int cacheExpirationTime)
+        private void RemoveCacheIfTimeEllapsed()
         {
-            cacheDirectory = config.GetValue<string>("ImageCacheMiddlewareSettings:CacheDirectory");
-            maxCachedImageCount = config.GetValue<int>("ImageCacheMiddlewareSettings:MaxCachedImageCount");
-            cacheExpirationTime = config.GetValue<int>("ImageCacheMiddlewareSettings:CacheExpirationTime");
-        }
-
-        private static void CopyStream(Stream input, Stream output)
-        {
-            byte[] buffer = new byte[8 * 1024];
-            int len;
-            while ((len = input.Read(buffer, 0, buffer.Length)) > 0)
+            if (DateTime.Now.Subtract(_lastCacheRequestDate).TotalSeconds >= _cacheExpirationInSeconds)
             {
-                output.Write(buffer, 0, len);
+                File.Delete(FullFileName);
+                _logger.LogDebug($"File '{FullFileName}' removed from cache");
             }
         }
+
+        private MemoryStream ReadFromCache()
+        {
+            var destination = new MemoryStream();
+            using (var source = File.Open(FullFileName, FileMode.Open))
+            {
+                source.CopyTo(destination);
+            }
+
+            return destination;
+        }
+
+        private void KeepOnDisk(MemoryStream inputStream)
+        {
+            Directory.CreateDirectory(_cacheDirectory);
+            using (FileStream outputStream = new FileStream(FullFileName, FileMode.Create))
+            {
+                inputStream.Seek(0, SeekOrigin.Begin);
+                inputStream.CopyTo(outputStream);
+            }
+        }
+
+        private bool IsImageRequested()
+        {
+            if (string.IsNullOrEmpty(_requestPath))
+            {
+                return false;
+            }
+
+            return imageSuffixes
+                .Any(i => _requestPath.EndsWith(i, StringComparison.InvariantCultureIgnoreCase));
+        }
+
+        private void ReadCacheSettings()
+        {
+            _cacheDirectory = _config.GetValue<string>(CacheDirectoryKey);
+            _cacheCapacity = _config.GetValue<int>(CacheCapacity);
+            _cacheExpirationInSeconds = _config.GetValue<int>(CacheExpirationTimeKey);
+        }
+        #endregion
     }
 }
