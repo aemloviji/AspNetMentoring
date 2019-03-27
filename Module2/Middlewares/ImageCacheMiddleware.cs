@@ -30,6 +30,8 @@ namespace Module2.Middlewares
 
         private string FullFileName => Path.Combine(_cacheDirectory, FileName);
 
+        private bool HasCache => File.Exists(FullFileName);
+
         public ImageCacheMiddleware(RequestDelegate next,
              ILogger<ImageCacheMiddleware> logger,
              IConfiguration config)
@@ -59,14 +61,14 @@ namespace Module2.Middlewares
         private async Task RunCacheFlow(HttpContext context)
         {
             RemoveCacheIfTimeEllapsed();
-            _lastCacheRequestDate = DateTime.Now;
-            if (File.Exists(FullFileName))
+            UpdateLastCacheRequestTime();
+            if (HasCache)
             {
                 await RetreiveImageFromCache(context);
             }
             else
             {
-                if (AllowedToSaveOnDisk())
+                if (!HasCacheCapacityReached())
                 {
                     await CacheImage(context);
                     return;
@@ -76,15 +78,15 @@ namespace Module2.Middlewares
             }
         }
 
-        private bool AllowedToSaveOnDisk()
+        private bool HasCacheCapacityReached()
         {
             var filesCountInCache = Directory.GetFiles(_cacheDirectory).Length;
             if (filesCountInCache >= _cacheCapacity)
             {
-                return false;
+                return true;
             }
 
-            return true;
+            return false;
         }
 
         private async Task RetreiveImageFromCache(HttpContext context)
@@ -123,6 +125,11 @@ namespace Module2.Middlewares
                 File.Delete(FullFileName);
                 _logger.LogDebug($"File '{FullFileName}' removed from cache");
             }
+        }
+
+        private static void UpdateLastCacheRequestTime()
+        {
+            _lastCacheRequestDate = DateTime.Now;
         }
 
         private MemoryStream ReadFromCache()
