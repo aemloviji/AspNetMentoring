@@ -41,6 +41,7 @@ namespace Module2.Middlewares
             _config = config;
 
             ReadCacheSettings();
+            InitializeCacheDirectory();
         }
 
         public async Task InvokeAsync(HttpContext context)
@@ -145,7 +146,6 @@ namespace Module2.Middlewares
 
         private void KeepOnDisk(MemoryStream inputStream)
         {
-            Directory.CreateDirectory(_cacheDirectory);
             using (FileStream outputStream = new FileStream(FullFileName, FileMode.Create))
             {
                 inputStream.Seek(0, SeekOrigin.Begin);
@@ -169,6 +169,11 @@ namespace Module2.Middlewares
             _cacheDirectory = _config.GetValue<string>(CacheDirectoryKey);
             _cacheCapacity = _config.GetValue<int>(CacheCapacity);
             _cacheExpirationInSeconds = _config.GetValue<int>(CacheExpirationTimeKey);
+        }
+               
+        private void InitializeCacheDirectory()
+        {
+            Directory.CreateDirectory(_cacheDirectory);
         }
         #endregion
     }
