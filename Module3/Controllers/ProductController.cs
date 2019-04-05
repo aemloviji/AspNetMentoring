@@ -2,13 +2,13 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Module2.Infrastructure.Repositories.Interfaces;
-using Module2.Models;
+using Module3.Infrastructure.Repositories.Interfaces;
+using Module3.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Module2.Controllers
+namespace Module3.Controllers
 {
     public class ProductController : Controller
     {

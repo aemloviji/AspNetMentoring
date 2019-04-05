@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Module2.Infrastructure.Repositories.Interfaces;
-using Module2.Models;
+using Module3.Infrastructure.Repositories.Interfaces;
+using Module3.Models;
 using System;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace Module2.Controllers
+namespace Module3.Controllers
 {
     public class CategoryController : Controller
     {

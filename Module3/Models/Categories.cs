@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
 
-namespace Module2.Models
+namespace Module3.Models
 {
     public partial class Categories
     {

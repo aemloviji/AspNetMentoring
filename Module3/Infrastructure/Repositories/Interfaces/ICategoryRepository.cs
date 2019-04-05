@@ -1,8 +1,8 @@
-﻿using Module2.Models;
+﻿using Module3.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Module2.Infrastructure.Repositories.Interfaces
+namespace Module3.Infrastructure.Repositories.Interfaces
 {
     public interface ICategoryRepository
     {

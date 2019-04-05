@@ -1,6 +1,6 @@
 using System;
 
-namespace Module2.Models
+namespace Module3.Models
 {
     public class ErrorViewModel
     {

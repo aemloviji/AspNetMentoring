@@ -10,7 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NLog.Web;
 
-namespace Module2
+namespace Module3
 {
     public class Program
     {

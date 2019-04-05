@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Module2.Infrastructure.Repositories.Interfaces;
-using Module2.Models;
+using Module3.Infrastructure.Repositories.Interfaces;
+using Module3.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Module2.Infrastructure.Repositories.Implementations
+namespace Module3.Infrastructure.Repositories.Implementations
 {
     public class CategoryRepository : ICategoryRepository
     {

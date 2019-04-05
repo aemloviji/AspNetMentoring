@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace Module2.Models
+namespace Module3.Models
 {
     public partial class Products
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Module2.Models
+namespace Module3.Models
 {
     public partial class Shippers
     {

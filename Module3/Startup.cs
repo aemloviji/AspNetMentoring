@@ -6,13 +6,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Module2.Filters;
-using Module2.Infrastructure.Repositories.Implementations;
-using Module2.Infrastructure.Repositories.Interfaces;
-using Module2.Middlewares;
-using Module2.Models;
+using Module3.Filters;
+using Module3.Infrastructure.Repositories.Implementations;
+using Module3.Infrastructure.Repositories.Interfaces;
+using Module3.Middlewares;
+using Module3.Models;
 
-namespace Module2
+namespace Module3
 {
     public class Startup
     {

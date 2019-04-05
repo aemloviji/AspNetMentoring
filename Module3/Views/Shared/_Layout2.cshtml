@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Module2</title>
+    <title>@ViewData["Title"] - Module3</title>
 
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.css" />
@@ -19,7 +19,7 @@
 <body>
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Module2</a>
+        <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Module3</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -42,10 +42,14 @@
     <partial name="_CookieConsentPartial" />
 
     <div class="container body-content">
+        <img src="~/thumbs/mercedes.png" asp-append-version="true" alt="Mercedes" />
+        <img src="~/thumbs/bmw.png" asp-append-version="true" alt="BMW" />
+        <img src="~/thumbs/volkswagen.png" asp-append-version="true" alt="Volkswagen" />
+
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; 2019 - Module2</p>
+            <p>&copy; 2019 - Module3</p>
         </footer>
     </div>
 
@@ -70,6 +74,5 @@
         <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
 
-    @RenderSection("Scripts", required: false)
 </body>
 </html>

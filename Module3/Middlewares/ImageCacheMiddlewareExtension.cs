@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 
-namespace Module2.Middlewares
+namespace Module3.Middlewares
 {
     public static class ImageCacheMiddlewareExtension
     {

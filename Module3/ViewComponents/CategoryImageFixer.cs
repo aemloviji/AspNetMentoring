@@ -2,7 +2,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace Module2.ViewComponents
+namespace Module3.ViewComponents
 {
     public class CategoryImageFixerViewComponent : ViewComponent
     {

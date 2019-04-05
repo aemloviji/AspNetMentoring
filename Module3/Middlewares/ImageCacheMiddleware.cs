@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace Module2.Middlewares
+namespace Module3.Middlewares
 {
     public class ImageCacheMiddleware
     {

@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 
-namespace Module2.Filters
+namespace Module3.Filters
 {
     public class CustomFilter : IActionFilter
     {
