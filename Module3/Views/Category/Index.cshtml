@@ -1,0 +1,52 @@
+﻿@model IEnumerable<Module2.Models.Categories>
+
+@{
+    ViewData["Title"] = "Categories";
+}
+
+<h2>Categories</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CategoryName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Picture)
+            </th>
+            <th>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CategoryName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @await Component.InvokeAsync("CategoryImageFixer", new { picture = item.Picture })
+                    <br />
+                    <a asp-action="ShowImage" asp-route-id="@item.CategoryId">
+                        Show Image (Default Router)
+                    </a>
+                    <br />
+                    <a href="@Url.RouteUrl("category-image",new { id = item.CategoryId})">
+                        Show Image (Image Spec. Router)
+                    </a>
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.CategoryId">Edit</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,20 @@
+﻿@model Module2.Models.Categories
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Category Image</h1>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        @await Component.InvokeAsync("CategoryImageFixer", new { picture = @Model.Picture })
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
