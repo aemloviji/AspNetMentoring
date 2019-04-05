@@ -27,7 +27,6 @@ namespace Module3.Controllers
             _productsRepository = productsRepository;
             _supplierRepository = supplierRepository;
             _categoryRepository = categoryRepository;
-
             _configuration = configuration;
         }
 

@@ -57,6 +57,9 @@
     <partial name="_CookieConsentPartial" />
 
     <div class="container body-content">
+        @await Component.InvokeAsync(nameof(Breadcrumbs))
+
+
         @RenderBody()
         <hr />
 
