@@ -8,10 +8,20 @@
 
 <div class="row">
     <div class="col-md-12">
-        <h2>Welcome to Module 2</h2>
+        <h2>Welcome to Module 3</h2>
+    </div>
+
+    <div class="col-md-12">
         <p>Click on below links to test ImageCacheMiddleware</p>
         <a href="@Url.Content("~/thumbs/bmw.png")">Bmw</a>
         <a href="@Url.Content("~/thumbs/mercedes.png")">Mercedes</a>
         <a href="@Url.Content("~/thumbs/volkswagen.png")">Volkswagen</a>
+    </div>
+
+    <div class="col-md-12">
+        <h4>Html/Tag Helpers</h4>
+
+        @Html.NorthwindImageLink(5, "Ala bula bo zkechi")
+        @Html.NorthwindImageLink(25, "Ala bula bo zkechi")
     </div>
 </div>

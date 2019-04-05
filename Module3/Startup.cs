@@ -79,6 +79,10 @@ namespace Module3
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
                 routes.MapRoute(
+                    name: "category-image-module3",
+                    template: "images/{id?}",
+                    defaults: new { controller = "Category", action = "ShowImage" });
+                routes.MapRoute(
                    name: "category-image",
                    template: "Category/{id?}/Image",
                    defaults: new { controller = "Category", action = "ShowImage" });
