@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Module4.Infrastructure.Repositories;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
+using Module4.Infrastructure.DAL;
+using Module4.Models;
 
 namespace Module4.Controllers
 {
@@ -13,6 +15,12 @@ namespace Module4.Controllers
             _unitOfWork = unitOfWork;
         }
 
+        [HttpGet]
+        public ActionResult<IEnumerable<Products>> GetAll()
+        {
+            return null;
+            //return _unitOfWork.GetRepository<Products>().List();
+        }
 
     }
 }

@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Module4.Models;
 
-namespace Module4.Infrastructure.Repositories
+namespace Module4.Infrastructure.DAL
 {
     public class GenericRepository<TEntity> : IRepository<TEntity> where TEntity : class
     {

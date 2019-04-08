@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Module4.Infrastructure.Repositories;
+using Module4.Infrastructure.DAL;
 using Module4.Models;
 using System.Collections.Generic;
 
@@ -18,7 +18,8 @@ namespace Module4.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Categories>> GetAll()
         {
-            return _unitOfWork.CategoryRepository.List();
+            return null;
+            // return _unitOfWork.GetRepository<Categories>().List();
         }
 
     }

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Module4.Infrastructure.Repositories;
+using Module4.Infrastructure.DAL;
 using Module4.Models;
 
 namespace Module4
