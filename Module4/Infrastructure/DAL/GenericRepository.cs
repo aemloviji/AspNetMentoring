@@ -18,7 +18,7 @@ namespace Module4.Infrastructure.DAL
             _dbSet = context.Set<TEntity>();
         }
 
-        public IEnumerable<TEntity> List(
+        public IEnumerable<TEntity> GetList(
             Expression<Func<TEntity, bool>> filter = null,
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
             string includeProperties = "")

@@ -2,6 +2,7 @@
 using Module4.Infrastructure.DAL;
 using Module4.Models;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Module4.Controllers
 {
@@ -18,8 +19,8 @@ namespace Module4.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Categories>> GetAll()
         {
-            return null;
-            // return _unitOfWork.GetRepository<Categories>().List();
+            return _unitOfWork.GetRepository<Categories>().GetList()
+                .ToList();
         }
 
     }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Module4.Infrastructure.DAL;
 using Module4.Models;
@@ -18,9 +19,8 @@ namespace Module4.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Products>> GetAll()
         {
-            return null;
-            //return _unitOfWork.GetRepository<Products>().List();
+            return _unitOfWork.GetRepository<Products>().GetList()
+                .ToList();
         }
-
     }
 }
