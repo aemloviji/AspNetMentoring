@@ -1,14 +1,23 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace Module4.Infrastructure.Repositories
 {
     public interface IRepository<TEntity> where TEntity : class
     {
-        Task<IEnumerable<TEntity>> ListAsync();
-        Task<TEntity> GetByIdAsync(int id);
-        Task InsertAsync(TEntity item);
-        Task UpdateAsync(TEntity item);
-        Task DeleteAsync(int id);
+        IEnumerable<TEntity> List(
+            Expression<Func<TEntity, bool>> filter,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy,
+            string includeProperties);
+
+        TEntity GetById(int id);
+
+        void Insert(TEntity item);
+
+        void Update(TEntity item);
+
+        void Delete(int id);
     }
 }

@@ -18,7 +18,7 @@ namespace Module4.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Categories>> GetAll()
         {
-            return _unitOfWork.CategoryRepository.ListAsync();
+            return _unitOfWork.CategoryRepository.List();
         }
 
     }

@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Module4.Models;
 
@@ -16,29 +18,59 @@ namespace Module4.Infrastructure.Repositories
             _dbSet = context.Set<TEntity>();
         }
 
-        public Task<IEnumerable<TEntity>> ListAsync()
+        public IEnumerable<TEntity> List(
+            Expression<Func<TEntity, bool>> filter = null,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
+            string includeProperties = "")
         {
-            throw new System.NotImplementedException();
+            IQueryable<TEntity> query = _dbSet;
+
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+
+            foreach (var includeProperty in includeProperties.Split
+                (new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                query = query.Include(includeProperty);
+            }
+
+            if (orderBy != null)
+            {
+                return orderBy(query).ToList();
+            }
+            else
+            {
+                return query.ToList();
+            }
         }
 
-        public Task<TEntity> GetByIdAsync(int id)
+        public TEntity GetById(int id)
         {
-            throw new System.NotImplementedException();
+            return _dbSet.Find(id);
         }
 
-        public Task InsertAsync(TEntity item)
+        public void Insert(TEntity item)
         {
-            throw new System.NotImplementedException();
+            _dbSet.Add(item);
         }
 
-        public Task UpdateAsync(TEntity item)
+        public void Update(TEntity item)
         {
-            throw new System.NotImplementedException();
+            _dbSet.Attach(item);
+            _context.Entry(item).State = EntityState.Modified;
         }
 
-        public Task DeleteAsync(int id)
+        public void Delete(int id)
         {
-            throw new System.NotImplementedException();
+            TEntity entityToDelete = _dbSet.Find(id);
+
+            if (_context.Entry(entityToDelete).State == EntityState.Detached)
+            {
+                _dbSet.Attach(entityToDelete);
+            }
+            _dbSet.Remove(entityToDelete);
         }
     }
 }
