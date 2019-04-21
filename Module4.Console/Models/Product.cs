@@ -1,4 +1,4 @@
-﻿namespace Module4.Console.Models
+﻿namespace Module4.Client.Console.Models
 {
     public class Product
     {

@@ -1,11 +1,10 @@
-﻿using Module4.Console.Models;
+﻿using Module4.Client.Console.Models;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
-using Output = System.Console;
 
 namespace Module4.Console
 {
@@ -19,15 +18,15 @@ namespace Module4.Console
 
         static void Main(string[] args)
         {
-            Output.WriteLine("Welcome to console client!");
+            System.Console.WriteLine("Welcome to console client!");
 
             //wait for api server to start
             Thread.Sleep(5000);
 
             var res = GetProductAsync().GetAwaiter().GetResult();
 
-            Output.WriteLine("Press any key to quit!");
-            Output.ReadLine();
+            System.Console.WriteLine("Press any key to quit!");
+            System.Console.ReadLine();
         }
         private static void InitializeHttpClient()
         {
@@ -48,7 +47,6 @@ namespace Module4.Console
             return product;
         }
 
-
         private static async Task<List<Catergory>> GetCategoryAsync<Catergory>()
         {
             List<Catergory> product = null;
@@ -61,15 +59,14 @@ namespace Module4.Console
             return product;
         }
 
-
         private static void ShowProduct(Product product)
         {
-            Output.WriteLine($"Name: {product.Name}\tPrice: {product.Price}\tCategory: {product.Category}");
+            System.Console.WriteLine($"Name: {product.Name}\tPrice: {product.Price}\tCategory: {product.Category}");
         }
 
         private static void ShowCategory(Category category)
         {
-            // Output.WriteLine($"Name: {category.Name}\tPrice: {category.Price}\tCategory: {category.Category}");
+            // System.Console.WriteLine($"Name: {category.Name}\tPrice: {category.Price}\tCategory: {category.Category}");
         }
     }
 }
