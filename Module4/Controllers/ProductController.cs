@@ -19,7 +19,7 @@ namespace Module4.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Products>> GetAll()
         {
-            return _unitOfWork.GetRepository<Products>().GetList()
+            return _unitOfWork.GetRepository<Products>().GetList(includeProperties: "Category")
                 .ToList();
         }
 

@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Module4.Infrastructure.DAL;
 using Module4.Models;
+using Newtonsoft.Json;
 
 namespace Module4
 {
@@ -25,7 +26,12 @@ namespace Module4
                 options.UseSqlServer(Configuration.GetConnectionString("NorthwindDatabase")));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc()
+                .AddJsonOptions(options =>
+                {
+                    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                })
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,7 +47,7 @@ namespace Module4
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseMvc();
         }
     }
