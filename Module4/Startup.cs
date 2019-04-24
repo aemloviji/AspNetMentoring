@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Module4.Infrastructure.DAL;
 using Module4.Models;
 using Newtonsoft.Json;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace Module4
 {
@@ -42,6 +43,11 @@ namespace Module4
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                 })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "Module4 API", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -56,6 +62,13 @@ namespace Module4
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Module4 API V1");
+                c.RoutePrefix = string.Empty;
+            });
 
             app.UseCors(CorsPolicyName);
             app.UseMvc();

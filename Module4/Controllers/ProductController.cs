@@ -36,6 +36,8 @@ namespace Module4.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(400)]
         public ActionResult<IEnumerable<Products>> Create(Products product)
         {
             _unitOfWork.GetRepository<Products>().Insert(product);
