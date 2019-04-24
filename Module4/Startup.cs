@@ -12,6 +12,8 @@ namespace Module4
 {
     public class Startup
     {
+        const string CorsPolicyName = "_corsPolicyBackEndApi";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -22,6 +24,14 @@ namespace Module4
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy(CorsPolicyName, builder =>
+                {
+                    builder.WithOrigins("http://localhost:52325");
+                });
+            });
+
             services.AddDbContext<NorthwindContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("NorthwindDatabase")));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -47,7 +57,7 @@ namespace Module4
                 app.UseHsts();
             }
 
-            //app.UseHttpsRedirection();
+            app.UseCors(CorsPolicyName);
             app.UseMvc();
         }
     }
