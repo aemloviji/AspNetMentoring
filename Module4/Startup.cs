@@ -37,7 +37,8 @@ namespace Module4
                 options.UseSqlServer(Configuration.GetConnectionString("NorthwindDatabase")));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            services.AddMvc()
+            services
+                .AddMvc()
                 .AddJsonOptions(options =>
                 {
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
