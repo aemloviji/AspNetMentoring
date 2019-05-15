@@ -1,26 +1,30 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Threading.Tasks;
 
 namespace Module5.Data
 {
     public class SeedData
     {
         private const string AdminRole = "administrator";
-        public static async Task Initialize(IServiceProvider serviceProvider, string adminUserName, string adminPwd)
+        private const string AdminUserName = "admin@localhost.com";
+
+        public static void Initialize(IServiceProvider serviceProvider)
         {
+            var config = serviceProvider.GetRequiredService<IConfiguration>();
+            var adminUserPassword = config["AdminUserPwd"];
+
             using (var context = new ApplicationDbContext(
                 serviceProvider.GetRequiredService<DbContextOptions<ApplicationDbContext>>()))
             {
-                await CreateRole(serviceProvider, AdminRole);
-                var adminID = await CreateAdmin(serviceProvider, adminPwd, adminUserName);
-                await GrantAdminRoleToAdminUser(serviceProvider, adminID, AdminRole);
+                SeedRoles(serviceProvider);
+                SeedUsers(serviceProvider, adminUserPassword);
             }
         }
 
-        private static async Task CreateRole(IServiceProvider serviceProvider, string role)
+        private static void SeedRoles(IServiceProvider serviceProvider)
         {
             var roleManager = serviceProvider.GetService<RoleManager<IdentityRole>>();
             if (roleManager == null)
@@ -28,38 +32,24 @@ namespace Module5.Data
                 throw new Exception("roleManager is null");
             }
 
-            if (!await roleManager.RoleExistsAsync(role))
+            if (!roleManager.RoleExistsAsync(AdminRole).Result)
             {
-                await roleManager.CreateAsync(new IdentityRole(role));
+                roleManager.CreateAsync(new IdentityRole(AdminRole));
             }
         }
 
-
-        private static async Task<string> CreateAdmin(IServiceProvider serviceProvider,
-                                                        string adminPwd, string UserName)
+        private static void SeedUsers(IServiceProvider serviceProvider, string adminPwd)
         {
             var userManager = serviceProvider.GetService<UserManager<IdentityUser>>();
 
-            var user = await userManager.FindByNameAsync(UserName);
+            var user = userManager.FindByEmailAsync(AdminUserName).Result;
             if (user == null)
             {
-                user = new IdentityUser { UserName = UserName };
-                await userManager.CreateAsync(user, adminPwd);
+                user = new IdentityUser { UserName = AdminUserName, Email = AdminUserName };
+                userManager.CreateAsync(user, adminPwd).Wait();
             }
 
-            return user.Id;
-        }
-
-        private static async Task<IdentityResult> GrantAdminRoleToAdminUser(IServiceProvider serviceProvider, string uid, string role)
-        {
-            var userManager = serviceProvider.GetService<UserManager<IdentityUser>>();
-            var user = await userManager.FindByIdAsync(uid);
-            if (user == null)
-            {
-                throw new Exception("User not exists!");
-            }
-
-            return await userManager.AddToRoleAsync(user, role);
+            userManager.AddToRoleAsync(user, AdminRole).Wait();
         }
     }
 }

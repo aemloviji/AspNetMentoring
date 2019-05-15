@@ -28,10 +28,7 @@ namespace Module5
                     var context = services.GetRequiredService<ApplicationDbContext>();
                     context.Database.Migrate();
 
-                    var config = host.Services.GetRequiredService<IConfiguration>();
-                    var adminUserPassword = config["AdminUserPwd"];
-
-                    SeedData.Initialize(services, "admin@module.net", adminUserPassword).Wait();
+                    SeedData.Initialize(services);
                 }
                 catch (Exception ex)
                 {
