@@ -6,7 +6,9 @@
     @if (SignInManager.IsSignedIn(User))
     {
         <li class="nav-item">
-            Hello @UserManager.GetUserName(User)!
+            <h6 style="margin-top:10px; color:cadetblue">
+                Hello @UserManager.GetUserName(User)!
+            </h6>
         </li>
         <li class="nav-item">
             <form class="form-inline" asp-controller="Account" asp-action="Logout" method="post">
