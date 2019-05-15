@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Module5.Models;
 
 namespace Module5.Data
 {
@@ -12,5 +13,6 @@ namespace Module5.Data
             : base(options)
         {
         }
+        public DbSet<Module5.Models.eeee> eeee { get; set; }
     }
 }
