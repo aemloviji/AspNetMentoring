@@ -13,6 +13,5 @@ namespace Module5.Data
             : base(options)
         {
         }
-        public DbSet<Module5.Models.eeee> eeee { get; set; }
     }
 }

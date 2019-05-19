@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Module5.Extensions;
 using Module5.Models.AccountViewModels;
+using System;
+using System.Threading.Tasks;
 
 namespace Module5.Controllers
 {
-    [Authorize]
     [Route("[controller]/[action]")]
     public class AccountController : Controller
     {
@@ -35,7 +31,6 @@ namespace Module5.Controllers
         }
 
         [HttpGet]
-        [AllowAnonymous]
         public async Task<IActionResult> Login(string returnUrl = null)
         {
             // Clear the existing external cookie to ensure a clean login process
@@ -45,8 +40,7 @@ namespace Module5.Controllers
             return View();
         }
 
-        [HttpPost]
-        [AllowAnonymous]
+        [HttpPost]        
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
         {
@@ -75,23 +69,20 @@ namespace Module5.Controllers
             return View(model);
         }
 
-        [HttpGet]
-        [AllowAnonymous]
+        [HttpGet]        
         public IActionResult Lockout()
         {
             return View();
         }
 
-        [HttpGet]
-        [AllowAnonymous]
+        [HttpGet]        
         public IActionResult Register(string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
 
-        [HttpPost]
-        [AllowAnonymous]
+        [HttpPost]        
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
         {
@@ -123,15 +114,13 @@ namespace Module5.Controllers
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
-        [HttpGet]
-        [AllowAnonymous]
+        [HttpGet]        
         public IActionResult ForgotPassword()
         {
             return View();
         }
 
-        [HttpPost]
-        [AllowAnonymous]
+        [HttpPost]        
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
@@ -157,16 +146,13 @@ namespace Module5.Controllers
             return View(model);
         }
 
-
-        [HttpGet]
-        [AllowAnonymous]
+        [HttpGet]        
         public IActionResult ForgotPasswordConfirmation()
         {
             return View();
         }
 
-        [HttpGet]
-        [AllowAnonymous]
+        [HttpGet]        
         public IActionResult ResetPassword(string code = null)
         {
             if (code == null)
@@ -177,8 +163,7 @@ namespace Module5.Controllers
             return View(model);
         }
 
-        [HttpPost]
-        [AllowAnonymous]
+        [HttpPost]        
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
         {
@@ -201,15 +186,11 @@ namespace Module5.Controllers
             return View();
         }
 
-        [HttpGet]
-        [AllowAnonymous]
+        [HttpGet]        
         public IActionResult ResetPasswordConfirmation()
         {
             return View();
         }
-
-
-
 
         #region private methods
         private void AddErrors(IdentityResult result)

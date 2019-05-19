@@ -1,8 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Module5.Models;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Module5.AD.Models;
 
-namespace Module5.Controllers
+namespace Module5.AD.Controllers
 {
     public class HomeController : Controller
     {
@@ -16,6 +21,7 @@ namespace Module5.Controllers
             return View();
         }
 
+        [AllowAnonymous]
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
